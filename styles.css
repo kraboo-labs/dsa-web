@@ -178,3 +178,11 @@ footer { margin-top: clamp(56px,8vw,96px); }
 .soon { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); background: var(--chip); padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
 @media (max-width: 900px) { .tiers { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .tiers { grid-template-columns: 1fr; } }
+
+/* ===== waitlist / subscribe form ===== */
+.sub-form { display: flex; gap: 10px; }
+.sub-form input { flex: 1; min-width: 0; font-family: inherit; font-size: 15px; padding: 12px 18px; border-radius: 999px; border: 1px solid var(--hair); background: var(--card); color: var(--ink); box-shadow: var(--shadow-sm); transition: border-color .15s, box-shadow .15s; }
+.sub-form input::placeholder { color: var(--faint); }
+.sub-form input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(51,70,234,0.18); }
+.sub-form .btn { flex: none; }
+@media (max-width: 480px) { .sub-form { flex-direction: column; } .sub-form .btn { width: 100%; justify-content: center; } }
