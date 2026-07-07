@@ -163,9 +163,9 @@ footer { margin-top: clamp(56px,8vw,96px); }
 
 /* ===== pricing ===== */
 .tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 40px; align-items: stretch; }
-.tier { background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: 28px 24px; display: flex; flex-direction: column; border: 1px solid transparent; }
-.tier.feature { border-color: var(--accent); box-shadow: var(--shadow); position: relative; }
-.tier .badge-pop { position: absolute; top: -11px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 3px 10px; border-radius: 999px; }
+.tier { background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: 28px 24px; display: flex; flex-direction: column; border: 2px solid transparent; }
+.tier.feature { border: 2px solid var(--accent); box-shadow: var(--shadow); position: relative; }
+.tier .badge-pop { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 4px 12px; border-radius: 999px; white-space: nowrap; box-shadow: 0 6px 16px -6px rgba(51,70,234,0.6); }
 .tier h3 { font-size: 18px; }
 .tier .price { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; margin: 12px 0 0; }
 .tier .price small { font-size: 15px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
