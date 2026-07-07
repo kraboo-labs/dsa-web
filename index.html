@@ -433,7 +433,7 @@
       <div class="fcolh">
         <h4>Stay in sync</h4>
         <p style="font-size:14px;color:var(--dim);margin:0 0 12px">Watch the data repo for change commits.</p>
-        <form class="sub-form" onsubmit="return false"><input type="email" placeholder="you@example.com" aria-label="Email"><button class="btn btn-solid" type="submit">Notify me</button></form>
+        <form class="sub-form" data-waitlist><input type="email" placeholder="you@example.com" aria-label="Email" required><input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0"><button class="btn btn-solid" type="submit">Notify me</button></form>
       </div>
     </div>
     <p class="disc"><b>Community mirror — not the authoritative source.</b> The official register lives at the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission</a>; verify there before any legal or compliance decision. Data licensed CC&nbsp;BY&nbsp;4.0, code MIT.</p>
@@ -467,6 +467,26 @@
       });
     }
     wire('curlBtn', 'cpL'); wire('curlBtn2', 'cpL2');
+
+    // Waitlist forms → POST to the API (Resend capture)
+    document.querySelectorAll('form[data-waitlist]').forEach(function (f) {
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var input = f.querySelector('input[type=email]'), btn = f.querySelector('button');
+        var email = (input.value || '').trim();
+        if (!email) { input.focus(); return; }
+        var orig = btn.textContent, hp = f.querySelector('input[name=company]');
+        btn.disabled = true; btn.textContent = 'Joining…';
+        fetch('https://api.dsa-api.com/v1/waitlist', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, company: hp ? hp.value : '' })
+        }).then(function (r) {
+          if (r.ok) { f.innerHTML = '<p style="font-weight:600;color:var(--ink)">✓ You\'re on the list.</p>'; }
+          else if (r.status === 503) { f.innerHTML = '<p style="color:var(--dim)">Thanks! Email <a href="mailto:hello@dsa-api.com">hello@dsa-api.com</a>.</p>'; }
+          else { throw new Error(); }
+        }).catch(function () { btn.disabled = false; btn.textContent = orig; alert('Something went wrong — please email hello@dsa-api.com'); });
+      });
+    });
 
     // Gentle scroll-reveal for smoother section transitions
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
