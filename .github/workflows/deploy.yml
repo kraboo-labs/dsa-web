@@ -36,18 +36,14 @@ jobs:
       - name: Registry login
         run: doctl registry login --expiry-seconds 1200
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Build & push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64
-          push: true
-          tags: |
-            ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
-            ${{ env.IMAGE }}:latest
+        # GitHub runners are amd64 and the target is amd64, so a plain docker
+        # build shares the doctl registry auth — no buildx container driver
+        # (which wouldn't inherit the login and 401s).
+        run: |
+          docker build -t ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }} -t ${{ env.IMAGE }}:latest .
+          docker push ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
+          docker push ${{ env.IMAGE }}:latest
 
       - name: Set up kubeconfig (via doctl)
         run: doctl kubernetes cluster kubeconfig save 62e4ef8b-9b3a-4c19-8324-53ee124afc56 --expiry-seconds 1200
