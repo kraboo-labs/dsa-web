@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API reference — dsa-api</title>
+<meta name="description" content="The dsa-api REST reference: eight public, read-only, CORS-enabled endpoints over the EU Trusted Flaggers register. No key required.">
+<meta name="theme-color" content="#5568ee">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z%22 fill=%22%233346ea%22/%3E%3Cpath d=%22M8.5 12l2.4 2.4L15.8 9.5%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://dsa-api.com/api.html">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:title" content="API reference — dsa-api">
+<meta property="og:description" content="Eight public, read-only, CORS-enabled endpoints over the EU Trusted Flaggers register. No key required.">
+<meta property="og:url" content="https://dsa-api.com/api.html">
+<meta property="og:image" content="https://dsa-api.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dsa-api.com/og-image.jpg">
+</head>
+<body>
+<header class="topbar">
+  <nav>
+    <a class="brand" href="index.html"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</a>
+    <div class="nlinks">
+      <a href="index.html">Home</a>
+      <a href="api.html" class="active">API</a>
+      <a href="data.html">Data</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="nact">
+      <a class="btn btn-white hideSm" href="https://github.com/kraboo-labs/dsa-api">GitHub</a>
+      <a class="btn btn-solid" href="https://docs.dsa-api.com/docs">Swagger UI</a>
+    </div>
+  </nav>
+  <div class="topbar-head">
+    <div class="eyebrow">API reference</div>
+    <h1 class="page-title">Eight endpoints. No key.</h1>
+    <p class="page-sub">Every route is public, read-only (<span class="mono">GET</span>), unauthenticated and CORS-enabled for any origin. The full schema lives at <span class="mono">/openapi.json</span>.</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <section class="blk">
+    <div class="kick">Base</div>
+    <h2>Where it lives</h2>
+    <div class="grid-3">
+      <div class="card"><h3>API</h3><p><a href="https://api.dsa-api.com">api.dsa-api.com</a></p></div>
+      <div class="card"><h3>Interactive docs</h3><p><a href="https://docs.dsa-api.com/docs">docs.dsa-api.com/docs</a> — Swagger UI</p></div>
+      <div class="card"><h3>Schema</h3><p><a href="https://api.dsa-api.com/openapi.json">/openapi.json</a> — full OpenAPI</p></div>
+    </div>
+    <div class="note"><b>Not a source of truth.</b> This is a community mirror. The authoritative register is the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission page</a>. Every response carries <span class="mono">X-Source-URL</span> and <span class="mono">X-Disclaimer</span> headers.</div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Endpoints</div>
+    <h2>The whole surface</h2>
+
+    <div class="endpoint">
+      <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/trusted-flaggers</span></div>
+      <p>List and filter designated flaggers.</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">country</td><td>Two-letter code, repeatable (e.g. <span class="mono">?country=SK&amp;country=FR</span>).</td></tr>
+          <tr><td class="mono">area</td><td>Area of expertise, repeatable. See the enum on the <a href="data.html">Data</a> page.</td></tr>
+          <tr><td class="mono">dsc_country</td><td>Filter by the coordinator's country.</td></tr>
+          <tr><td class="mono">status</td><td><span class="mono">active</span> (default) or <span class="mono">all</span>.</td></tr>
+          <tr><td class="mono">designated_after / _before</td><td>ISO date bounds on designation.</td></tr>
+          <tr><td class="mono">q</td><td>Substring match on name or address.</td></tr>
+          <tr><td class="mono">limit / offset</td><td>Pagination. <span class="mono">limit</span> ≤ 200.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/trusted-flaggers/lookup</span></div>
+      <p>Resolve a single flagger by <span class="mono">email</span>, <span class="mono">domain</span> or <span class="mono">website</span> — handy for checking whether an inbound report comes from a designated body.</p>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/trusted-flaggers/{id}</span></div>
+      <p>A single flagger by its stable UUID.</p>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/trusted-flaggers/{id}/history</span></div>
+      <p>Every change event recorded for one flagger.</p>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/changes</span></div>
+      <p>Changelog of created / updated / removed / restored events across the register.</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">since</td><td>ISO timestamp. Defaults to 30 days ago.</td></tr>
+          <tr><td class="mono">limit / offset</td><td>Pagination. <span class="mono">limit</span> ≤ 500.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/stats</span></div>
+      <p>Aggregate counts by country, area of expertise and DSC country.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="endpoint" style="margin-top:0">
+        <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/health</span></div>
+        <p>DB-backed readiness check.</p>
+      </div>
+      <div class="endpoint" style="margin-top:0">
+        <div class="ep-head"><span class="method">GET</span><span class="ep-path">/v1/version</span></div>
+        <p>App version and environment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Example</div>
+    <h2>Active flaggers in Slovakia</h2>
+    <div class="code"><pre><span class="c"># request</span>
+curl <span class="s">https://api.dsa-api.com/v1/trusted-flaggers?country=SK</span>
+
+<span class="c"># response</span>
+[
+  {
+    <span class="k">"name"</span>: <span class="s">"Ochráň ma"</span>,
+    <span class="k">"country_code"</span>: <span class="s">"SK"</span>,
+    <span class="k">"dsc_name"</span>: <span class="s">"Rada pre mediálne služby | Council for Media Services"</span>,
+    <span class="k">"areas_of_expertise"</span>: [<span class="s">"cyber_violence"</span>, <span class="s">"illegal_speech"</span>, <span class="s">"self_harm"</span>, <span class="s">"protection_of_minors"</span>, <span class="s">"public_security"</span>, <span class="s">"scams_fraud"</span>],
+    <span class="k">"designation_date"</span>: <span class="s">"2025-12-17"</span>,
+    <span class="k">"website"</span>: <span class="s">"https://ochranma.sk"</span>,
+    <span class="k">"status"</span>: <span class="s">"active"</span>
+  }
+]</pre></div>
+    <p>The full field list is documented on the <a href="data.html">Data</a> page.</p>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Limits &amp; headers</div>
+    <h2>Fair use, no key</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Rate limits</h3>
+        <ul class="list">
+          <li><b>60</b> requests / minute per client IP</li>
+          <li><b>5000</b> requests / day per client IP</li>
+          <li>Over the limit returns <b>429</b> with a <span class="mono">Retry-After</span> header</li>
+          <li><span class="mono">X-RateLimit-Limit</span> and <span class="mono">X-RateLimit-Window-Seconds</span> on every <span class="mono">/v1/</span> response</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Provenance headers</h3>
+        <ul class="list">
+          <li><span class="mono">X-Source-URL</span> — the upstream EU page</li>
+          <li><span class="mono">X-Disclaimer</span> — the mirror notice</li>
+          <li><span class="mono">X-Data-Updated-At</span> — last successful scrape</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Prefer flat files?</h2>
+    <p>Skip the API entirely and read the open dataset straight from Git — JSON, CSV and a full changelog.</p>
+    <div class="row">
+      <a class="btn btn-white btn-lg" href="data.html">Open data</a>
+      <a class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)" href="https://docs.dsa-api.com/docs">Try it in Swagger</a>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div class="foot-lead">
+      <a class="brand" href="index.html"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</a>
+      <p>An open mirror of the EU Trusted Flaggers register. Built by Kraboo Labs.</p>
+    </div>
+    <div class="fcolh"><h4>Product</h4><a href="api.html">API reference</a><a href="https://docs.dsa-api.com/docs">Swagger docs</a><a href="https://status.dsa-api.com">Status</a></div>
+    <div class="fcolh"><h4>Data</h4><a href="data.html">Open data</a><a href="https://github.com/kraboo-labs/dsa-data/blob/main/data/changelog.json">Changelog</a><a href="https://github.com/kraboo-labs/dsa-api">Source code</a></div>
+    <div class="fcolh"><h4>More</h4><a href="about.html">About</a><a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">EU register ↗</a><a href="https://api.dsa-api.com/openapi.json">openapi.json</a></div>
+  </div>
+  <p class="disc"><b>Community mirror — not the authoritative source.</b> The official register lives at the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission</a>; verify there before any legal or compliance decision. Data licensed CC&nbsp;BY&nbsp;4.0, code MIT.</p>
+  <div class="foot-bar">
+    <div class="links"><a href="index.html">Home</a><a href="api.html">API</a><a href="data.html">Data</a><a href="about.html">About</a></div>
+    <span>© 2026 Kraboo Labs · dsa-api.com</span>
+  </div>
+</div></footer>
+</body>
+</html>

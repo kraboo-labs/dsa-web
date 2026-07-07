@@ -1,0 +1,12 @@
+{
+  "name": "dsa-api — EU Trusted Flaggers register",
+  "short_name": "dsa-api",
+  "description": "An open REST API and dataset mirroring the EU Trusted Flaggers register (DSA Article 22).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef0fd",
+  "theme_color": "#5568ee",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

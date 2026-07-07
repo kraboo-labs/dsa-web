@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open data — dsa-api</title>
+<meta name="description" content="The EU Trusted Flaggers register as flat, machine-readable files — JSON, CSV and an append-only changelog. Licensed CC BY 4.0.">
+<meta name="theme-color" content="#5568ee">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z%22 fill=%22%233346ea%22/%3E%3Cpath d=%22M8.5 12l2.4 2.4L15.8 9.5%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://dsa-api.com/data.html">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Open data — dsa-api">
+<meta property="og:description" content="The EU Trusted Flaggers register as flat, machine-readable files — JSON, CSV and an append-only changelog. CC BY 4.0.">
+<meta property="og:url" content="https://dsa-api.com/data.html">
+<meta property="og:image" content="https://dsa-api.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dsa-api.com/og-image.jpg">
+</head>
+<body>
+<header class="topbar">
+  <nav>
+    <a class="brand" href="index.html"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</a>
+    <div class="nlinks">
+      <a href="index.html">Home</a>
+      <a href="api.html">API</a>
+      <a href="data.html" class="active">Data</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="nact">
+      <a class="btn btn-white hideSm" href="https://github.com/kraboo-labs/dsa-data">GitHub</a>
+      <a class="btn btn-solid" href="https://docs.dsa-api.com/docs">Read the docs</a>
+    </div>
+  </nav>
+  <div class="topbar-head">
+    <div class="eyebrow">Open data</div>
+    <h1 class="page-title">The register, as flat files.</h1>
+    <p class="page-sub">A machine-readable mirror in <span class="mono">dsa-data</span> — JSON, CSV and an append-only changelog. Refreshed automatically whenever the upstream list changes. Licensed CC&nbsp;BY&nbsp;4.0.</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <section class="blk">
+    <div class="kick">What's in the repo</div>
+    <h2>Three files, one snapshot folder</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>File</th><th>Format</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">trusted-flaggers.json</td><td>JSON</td><td>Current state of every flagger, ordered by name, with normalized fields.</td></tr>
+        <tr><td class="mono">trusted-flaggers.csv</td><td>CSV</td><td>Flat view with the most useful columns — spreadsheet-friendly.</td></tr>
+        <tr><td class="mono">changelog.json</td><td>JSON</td><td>Append-only log of every created / updated / removed / restored event since the mirror started.</td></tr>
+        <tr><td class="mono">source-snapshots/YYYY-MM-DD.html</td><td>HTML</td><td>Frozen copy of the upstream page at the time of each detected change.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="chips">
+      <span><a href="https://github.com/kraboo-labs/dsa-data" style="color:inherit">Browse dsa-data ↗</a></span>
+      <span><a href="https://raw.githubusercontent.com/kraboo-labs/dsa-data/main/data/trusted-flaggers.json" style="color:inherit">trusted-flaggers.json ↗</a></span>
+      <span><a href="https://github.com/kraboo-labs/dsa-data/blob/main/data/changelog.json" style="color:inherit">changelog.json ↗</a></span>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Schema</div>
+    <h2>Every field on a flagger</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">id</td><td>Stable UUID derived from (name, DSC name, designation date). The same entry keeps its id across scrapes.</td></tr>
+        <tr><td class="mono">name</td><td>Flagger name as published.</td></tr>
+        <tr><td class="mono">email, email_domain, website</td><td>Contact details and the normalized domain used for lookups.</td></tr>
+        <tr><td class="mono">address_raw</td><td>Address string as published.</td></tr>
+        <tr><td class="mono">country_code</td><td>Two-letter country of the flagger.</td></tr>
+        <tr><td class="mono">dsc_name, dsc_country_code</td><td>The Digital Services Coordinator that designated it, and its country.</td></tr>
+        <tr><td class="mono">areas_of_expertise_raw</td><td>Labels exactly as published by the EU.</td></tr>
+        <tr><td class="mono">areas_of_expertise</td><td>Normalized to a fixed enum; unknown labels map to <span class="mono">other</span> with the raw string preserved.</td></tr>
+        <tr><td class="mono">designation_date</td><td>When the flagger was designated.</td></tr>
+        <tr><td class="mono">status</td><td><span class="mono">active</span> or removed.</td></tr>
+        <tr><td class="mono">first_seen_at, last_seen_at</td><td>When our scraper first and last saw the entry.</td></tr>
+      </tbody>
+    </table></div>
+    <h3 style="margin-top:26px">Areas of expertise enum (14)</h3>
+    <div class="chips">
+      <span>illegal_speech</span><span>cyber_violence</span><span>scams_fraud</span><span>ip_infringement</span><span>protection_of_minors</span><span>data_privacy</span><span>violence</span><span>illegal_products</span><span>public_security</span><span>gender_based_violence</span><span>consumer_protection</span><span>civil_discourse</span><span>self_harm</span><span>animal_welfare</span>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Freshness</div>
+    <h2>Updated only when it changes</h2>
+    <p class="lead">The scraper runs every six hours and diffs the upstream page against the last known state. New commits land only when the register actually changed — idle days produce no commits.</p>
+    <div class="code"><pre><span class="c"># each commit message summarizes the diff</span>
+data: 2 created, 1 updated, 0 removed, 0 restored (timestamp)</pre></div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Use it</div>
+    <h2>Fetch without the API</h2>
+    <div class="code"><pre><span class="c"># latest snapshot</span>
+curl -sSL <span class="s">https://raw.githubusercontent.com/kraboo-labs/dsa-data/main/data/trusted-flaggers.json</span>
+
+<span class="c"># or pin a commit for a reproducible point-in-time view</span>
+curl -sSL <span class="s">https://raw.githubusercontent.com/kraboo-labs/dsa-data/&lt;commit&gt;/data/trusted-flaggers.json</span></pre></div>
+    <p>Want to filter by country, area or email domain, or read the change stream? Use the <a href="api.html">REST API</a> instead.</p>
+  </section>
+
+  <section class="blk">
+    <div class="kick">License</div>
+    <h2>CC BY 4.0</h2>
+    <ul class="list">
+      <li><b>Data</b> (everything under <span class="mono">data/</span>): CC&nbsp;BY&nbsp;4.0</li>
+      <li><b>Code</b>: MIT</li>
+      <li>Please credit <b>“dsa-api.com — open mirror of the EU Trusted Flaggers register”</b> with a link back.</li>
+    </ul>
+    <div class="note"><b>Community mirror — not the authoritative source.</b> If you act on legal or compliance decisions, verify against the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">official European Commission page</a>.</div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Need queries, not files?</h2>
+    <p>Filter, look up and diff the register over a small, keyless REST API.</p>
+    <div class="row">
+      <a class="btn btn-white btn-lg" href="api.html">API reference</a>
+      <a class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)" href="https://github.com/kraboo-labs/dsa-data">Open the repo ↗</a>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div class="foot-lead">
+      <a class="brand" href="index.html"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</a>
+      <p>An open mirror of the EU Trusted Flaggers register. Built by Kraboo Labs.</p>
+    </div>
+    <div class="fcolh"><h4>Product</h4><a href="api.html">API reference</a><a href="https://docs.dsa-api.com/docs">Swagger docs</a><a href="https://status.dsa-api.com">Status</a></div>
+    <div class="fcolh"><h4>Data</h4><a href="data.html">Open data</a><a href="https://github.com/kraboo-labs/dsa-data/blob/main/data/changelog.json">Changelog</a><a href="https://github.com/kraboo-labs/dsa-api">Source code</a></div>
+    <div class="fcolh"><h4>More</h4><a href="about.html">About</a><a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">EU register ↗</a><a href="https://api.dsa-api.com/openapi.json">openapi.json</a></div>
+  </div>
+  <p class="disc"><b>Community mirror — not the authoritative source.</b> The official register lives at the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission</a>; verify there before any legal or compliance decision. Data licensed CC&nbsp;BY&nbsp;4.0, code MIT.</p>
+  <div class="foot-bar">
+    <div class="links"><a href="index.html">Home</a><a href="api.html">API</a><a href="data.html">Data</a><a href="about.html">About</a></div>
+    <span>© 2026 Kraboo Labs · dsa-api.com</span>
+  </div>
+</div></footer>
+</body>
+</html>

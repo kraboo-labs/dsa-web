@@ -1,0 +1,9 @@
+# strategy / commercial docs live in the private dsa-api-hq repo — never here
+prd/
+.DS_Store
+**/.DS_Store
+node_modules/
+*.log
+
+# gstack tooling artifacts
+.gstack/

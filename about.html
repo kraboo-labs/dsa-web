@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — dsa-api</title>
+<meta name="description" content="How dsa-api works: a scraper mirrors the EU Trusted Flaggers register every six hours into a queryable API and open dataset. A community mirror, not the authoritative source.">
+<meta name="theme-color" content="#5568ee">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z%22 fill=%22%233346ea%22/%3E%3Cpath d=%22M8.5 12l2.4 2.4L15.8 9.5%22 stroke=%22white%22 stroke-width=%222%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://dsa-api.com/about.html">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:title" content="About — dsa-api">
+<meta property="og:description" content="How dsa-api works: a scraper mirrors the EU Trusted Flaggers register every six hours into a queryable API and open dataset.">
+<meta property="og:url" content="https://dsa-api.com/about.html">
+<meta property="og:image" content="https://dsa-api.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dsa-api.com/og-image.jpg">
+</head>
+<body>
+<header class="topbar">
+  <nav>
+    <a class="brand" href="index.html"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</a>
+    <div class="nlinks">
+      <a href="index.html">Home</a>
+      <a href="api.html">API</a>
+      <a href="data.html">Data</a>
+      <a href="about.html" class="active">About</a>
+    </div>
+    <div class="nact">
+      <a class="btn btn-white hideSm" href="https://github.com/kraboo-labs/dsa-api">GitHub</a>
+      <a class="btn btn-solid" href="https://docs.dsa-api.com/docs">Read the docs</a>
+    </div>
+  </nav>
+  <div class="topbar-head">
+    <div class="eyebrow">About</div>
+    <h1 class="page-title">The register was a web page.</h1>
+    <p class="page-sub">The European Commission publishes the Article&nbsp;22(5) list of designated Trusted Flaggers as HTML. dsa-api turns it into something you can build on — refreshed every six hours, served as an API and an open dataset.</p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <section class="blk">
+    <div class="kick">Why it exists</div>
+    <h2>One register, many consumers</h2>
+    <p class="lead">Under the Digital Services Act, platforms must give designated Trusted Flaggers priority when they report content. But the official list is a page meant for reading, not for querying. dsa-api keeps a structured, always-fresh copy so trust &amp; safety teams, compliance tooling, researchers and journalists can all work from the same live data — without each re-scraping the same HTML.</p>
+  </section>
+
+  <section class="blk">
+    <div class="kick">How it works</div>
+    <h2>Scrape, diff, publish</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></div>
+        <h3>1 · Scrape every 6h</h3>
+        <p>A scheduled job fetches the Commission's page and parses it into structured records.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+        <h3>2 · Diff &amp; ingest</h3>
+        <p>Each run is compared against the database. Created, updated, removed and restored events are recorded.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M7 11l5 5 5-5M5 21h14"/></svg></div>
+        <h3>3 · Serve &amp; export</h3>
+        <p>The API reads from the database; a flat JSON/CSV export is pushed to the open-data repo.</p>
+      </div>
+    </div>
+    <div class="code"><pre>EU register (HTML) ──▶ scraper (every 6h)
+                          │  parse → diff → ingest
+                          ▼
+                    database  ◀── REST API ──▶ clients
+                          │
+                          ▼
+                 export JSON/CSV ──▶ git push ──▶ open data</pre></div>
+    <p>A watchdog raises an alert if the last successful scrape is more than 24 hours old, so staleness never goes unnoticed.</p>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Coverage</div>
+    <h2>21 member states, one place</h2>
+    <p>Every entry is attributed to the national Digital Services Coordinator that designated it. Current breakdown of designated flaggers by country:</p>
+    <div class="chips">
+      <span>AT 8</span><span>BE 3</span><span>DE 4</span><span>DK 2</span><span>EE 3</span><span>EL 4</span><span>FI 3</span><span>FR 8</span><span>HU 1</span><span>IE 1</span><span>IT 10</span><span>LT 6</span><span>LU 1</span><span>LV 2</span><span>MT 1</span><span>NL 4</span><span>PT 2</span><span>RO 4</span><span>SE 2</span><span>SI 3</span><span>SK 2</span>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Good to know</div>
+    <h2>Questions</h2>
+    <div class="grid-2">
+      <div class="card"><h3>Is this official?</h3><p>No. It's a community mirror for convenience. The authoritative source is the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission page</a>. Verify there before any legal or compliance decision.</p></div>
+      <div class="card"><h3>How fresh is it?</h3><p>The scraper checks every six hours; the data and changelog update only when something actually changed. Responses carry an <span class="mono">X-Data-Updated-At</span> header.</p></div>
+      <div class="card"><h3>Do I need a key?</h3><p>No. Public, read-only, CORS-enabled, with fair-use rate limits. See the <a href="api.html">API reference</a>.</p></div>
+      <div class="card"><h3>Can I use it commercially?</h3><p>Yes — data is CC&nbsp;BY&nbsp;4.0, code is MIT. Please credit and link back. Details on the <a href="data.html">Data</a> page.</p></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kick">Colophon</div>
+    <h2>Who &amp; what</h2>
+    <ul class="list">
+      <li>Built and maintained by <b>Kraboo Labs</b>.</li>
+      <li>Source code: <a href="https://github.com/kraboo-labs/dsa-api">kraboo-labs/dsa-api</a> · Open data: <a href="https://github.com/kraboo-labs/dsa-data">kraboo-labs/dsa-data</a></li>
+      <li>Live status &amp; uptime: <a href="https://status.dsa-api.com">status.dsa-api.com</a></li>
+    </ul>
+    <div class="note"><b>Community mirror — not the authoritative source.</b> We make no compliance guarantees. The Commission's page is the source of truth.</div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Start querying in one line.</h2>
+    <p>Free, open, and always in sync with the EU register. No signup, no key, no catch.</p>
+    <div class="row">
+      <a class="btn btn-white btn-lg" href="api.html">API reference</a>
+      <a class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,0.5)" href="data.html">Open data</a>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div class="foot-lead">
+      <a class="brand" href="index.html"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</a>
+      <p>An open mirror of the EU Trusted Flaggers register. Built by Kraboo Labs.</p>
+    </div>
+    <div class="fcolh"><h4>Product</h4><a href="api.html">API reference</a><a href="https://docs.dsa-api.com/docs">Swagger docs</a><a href="https://status.dsa-api.com">Status</a></div>
+    <div class="fcolh"><h4>Data</h4><a href="data.html">Open data</a><a href="https://github.com/kraboo-labs/dsa-data/blob/main/data/changelog.json">Changelog</a><a href="https://github.com/kraboo-labs/dsa-api">Source code</a></div>
+    <div class="fcolh"><h4>More</h4><a href="about.html">About</a><a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">EU register ↗</a><a href="https://api.dsa-api.com/openapi.json">openapi.json</a></div>
+  </div>
+  <p class="disc"><b>Community mirror — not the authoritative source.</b> The official register lives at the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission</a>; verify there before any legal or compliance decision. Data licensed CC&nbsp;BY&nbsp;4.0, code MIT.</p>
+  <div class="foot-bar">
+    <div class="links"><a href="index.html">Home</a><a href="api.html">API</a><a href="data.html">Data</a><a href="about.html">About</a></div>
+    <span>© 2026 Kraboo Labs · dsa-api.com</span>
+  </div>
+</div></footer>
+</body>
+</html>
