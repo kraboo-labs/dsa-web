@@ -60,6 +60,7 @@ function nav(depth, active) {
       ${link("index.html", "Home", "home")}
       ${link("flaggers/index.html", "Flaggers", "flaggers")}
       ${link("api.html", "API", "api")}
+      ${link("pricing.html", "Pricing", "pricing")}
       ${link("data.html", "Data", "data")}
       ${link("about.html", "About", "about")}
     </div>
@@ -82,7 +83,7 @@ function footer(depth) {
     <div class="fcolh"><h4>More</h4><a href="${r}about.html">About</a><a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">EU register ↗</a><a href="https://api.dsa-api.com/openapi.json">openapi.json</a></div>
   </div>
   <p class="disc"><b>Community mirror — not the authoritative source.</b> The official register lives at the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission</a>; verify there before any legal or compliance decision. Data licensed CC&nbsp;BY&nbsp;4.0, code MIT.</p>
-  <div class="foot-bar"><div class="links"><a href="${r}index.html">Home</a><a href="${r}flaggers/index.html">Flaggers</a><a href="${r}api.html">API</a><a href="${r}data.html">Data</a><a href="${r}about.html">About</a></div><span>© ${YEAR} Kraboo Labs · dsa-api.com</span></div>
+  <div class="foot-bar"><a class="status-pill" href="https://status.dsa-api.com"><span class="dot"></span>All systems operational · 100% uptime</a><span>© ${YEAR} Kraboo Labs · dsa-api.com</span></div>
 </div></footer>`;
 }
 function crumbs(depth, trail) {
@@ -358,6 +359,7 @@ ${l.html}
   const staticUrls = [
     { loc: `${SITE}/`, priority: "1.0" },
     { loc: `${SITE}/api.html`, priority: "0.8" },
+    { loc: `${SITE}/pricing.html`, priority: "0.8" },
     { loc: `${SITE}/data.html`, priority: "0.8" },
     { loc: `${SITE}/about.html`, priority: "0.6" },
   ];

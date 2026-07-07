@@ -155,3 +155,26 @@ footer { margin-top: clamp(56px,8vw,96px); }
 .prose-block { max-width: 68ch; }
 .prose-block h2 { margin-top: 34px; }
 .prose-block p { font-size: 16.5px; }
+
+/* ===== status pill (footer) ===== */
+.status-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--dim); }
+.status-pill:hover { color: var(--accent); text-decoration: none; }
+.status-pill .dot { width: 8px; height: 8px; border-radius: 999px; background: #22c39b; box-shadow: 0 0 0 3px rgba(34,195,155,0.22); }
+
+/* ===== pricing ===== */
+.tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 40px; align-items: stretch; }
+.tier { background: var(--card); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: 28px 24px; display: flex; flex-direction: column; border: 1px solid transparent; }
+.tier.feature { border-color: var(--accent); box-shadow: var(--shadow); position: relative; }
+.tier .badge-pop { position: absolute; top: -11px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 3px 10px; border-radius: 999px; }
+.tier h3 { font-size: 18px; }
+.tier .price { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; margin: 12px 0 0; }
+.tier .price small { font-size: 15px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
+.tier .tag { font-size: 13.5px; color: var(--dim); margin: 6px 0 0; min-height: 40px; }
+.tier ul { list-style: none; padding: 0; margin: 18px 0 0; flex: 1; }
+.tier ul li { position: relative; padding: 7px 0 7px 24px; font-size: 14px; color: var(--dim); }
+.tier ul li::before { content: "✓"; position: absolute; left: 0; color: var(--teal); font-weight: 700; }
+.tier ul li.muted { color: var(--faint); } .tier ul li.muted::before { content: "○"; color: var(--faint); }
+.tier .btn { margin-top: 20px; justify-content: center; width: 100%; }
+.soon { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); background: var(--chip); padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+@media (max-width: 900px) { .tiers { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .tiers { grid-template-columns: 1fr; } }

@@ -239,6 +239,9 @@
   .foot-bar .links { display: flex; gap: 22px; }
   .foot-bar a, .foot-bar span { font-size: 13px; color: var(--faint); }
   .foot-bar a:hover { color: var(--accent); }
+  .status-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--faint); }
+  .status-pill:hover { color: var(--accent); }
+  .status-pill .dot { width: 8px; height: 8px; border-radius: 999px; background: #22c39b; box-shadow: 0 0 0 3px rgba(34,195,155,0.22); }
   .disc { font-size: 12.5px; color: var(--faint); line-height: 1.7; max-width: 74ch; margin: 8px 0 0; }
   .disc a { color: var(--accent); }
 
@@ -277,10 +280,11 @@
     <nav>
       <div class="brand"><span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.4 8.3-8 11-4.6-2.7-8-6-8-11V5l8-3z" fill="currentColor" opacity="0.9"/><path d="M8.5 12l2.4 2.4L15.8 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>dsa-api</div>
       <div class="nlinks">
+        <a href="flaggers/index.html">Flaggers</a>
         <a href="api.html">API</a>
+        <a href="pricing.html">Pricing</a>
         <a href="data.html">Data</a>
         <a href="about.html">About</a>
-        <a href="https://docs.dsa-api.com/docs">Docs</a>
       </div>
       <div class="nact">
         <a class="btn btn-white ghost" href="https://github.com/kraboo-labs/dsa-api">GitHub</a>
@@ -434,7 +438,7 @@
     </div>
     <p class="disc"><b>Community mirror — not the authoritative source.</b> The official register lives at the <a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">European Commission</a>; verify there before any legal or compliance decision. Data licensed CC&nbsp;BY&nbsp;4.0, code MIT.</p>
     <div class="foot-bar">
-      <div class="links"><a href="api.html">API</a><a href="data.html">Data</a><a href="about.html">About</a><a href="https://digital-strategy.ec.europa.eu/en/policies/trusted-flaggers-under-dsa">EU register</a></div>
+      <a class="status-pill" href="https://status.dsa-api.com"><span class="dot"></span>All systems operational · 100% uptime</a>
       <span>© 2026 Kraboo Labs · dsa-api.com</span>
     </div>
   </footer>
