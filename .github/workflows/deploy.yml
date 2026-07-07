@@ -33,19 +33,10 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Log in to DO Container Registry
-        # login-action writes ~/.docker/config.json that the host docker daemon
-        # reads for `docker push` (doctl's own login wrote creds the CLI didn't
-        # pick up in CI). DO accepts the API token as username and password.
-        uses: docker/login-action@v3
-        with:
-          registry: registry.digitalocean.com
-          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
       - name: Build & push
-        # Plain host-daemon build+push (no buildx container driver — it couldn't
-        # complete DO's oauth exchange). Retry rides out Docker Hub base blips.
+        # Matches the dsa-api deploy (proven on this registry): doctl registry
+        # login + plain host-daemon build/push. DO's registry auth endpoint
+        # occasionally 401s, so re-login before each push attempt and retry.
         run: |
           for i in 1 2 3; do
             docker build --platform linux/amd64 \
@@ -53,8 +44,15 @@ jobs:
               -t ${{ env.IMAGE }}:latest . && break
             echo "build attempt $i failed, retrying in 10s"; sleep 10
           done
-          docker push ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
-          docker push ${{ env.IMAGE }}:latest
+          for i in 1 2 3; do
+            doctl registry login --expiry-seconds 3600 >/dev/null 2>&1
+            if docker push ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }} \
+               && docker push ${{ env.IMAGE }}:latest; then
+              echo "push ok"; exit 0
+            fi
+            echo "push attempt $i failed (auth?), re-login + retry in 15s"; sleep 15
+          done
+          echo "::error::push failed after 3 attempts"; exit 1
 
       - name: Set up kubeconfig (via doctl)
         run: doctl kubernetes cluster kubeconfig save 62e4ef8b-9b3a-4c19-8324-53ee124afc56 --expiry-seconds 1200
