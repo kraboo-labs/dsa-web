@@ -33,13 +33,19 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Login to DO Container Registry
-        run: doctl registry login --expiry-seconds 7200
+      - name: Log in to DO Container Registry
+        # login-action writes ~/.docker/config.json that the host docker daemon
+        # reads for `docker push` (doctl's own login wrote creds the CLI didn't
+        # pick up in CI). DO accepts the API token as username and password.
+        uses: docker/login-action@v3
+        with:
+          registry: registry.digitalocean.com
+          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build & push
-        # Same proven pattern as the dsa-api deploy on this registry: host docker
-        # daemon (shares the doctl login creds), plain build+push. The retry
-        # rides out occasional anonymous Docker Hub base-image pull blips.
+        # Plain host-daemon build+push (no buildx container driver — it couldn't
+        # complete DO's oauth exchange). Retry rides out Docker Hub base blips.
         run: |
           for i in 1 2 3; do
             docker build --platform linux/amd64 \
