@@ -33,28 +33,22 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Log in to DO container registry
-        # DO registry accepts the API token as both username and password.
-        # login-action writes the creds buildx uses, so the push authorises;
-        # the public base image still pulls anonymously from Docker Hub.
-        uses: docker/login-action@v3
-        with:
-          registry: registry.digitalocean.com
-          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Login to DO Container Registry
+        run: doctl registry login --expiry-seconds 7200
 
       - name: Build & push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          platforms: linux/amd64
-          push: true
-          tags: |
-            ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
-            ${{ env.IMAGE }}:latest
+        # Same proven pattern as the dsa-api deploy on this registry: host docker
+        # daemon (shares the doctl login creds), plain build+push. The retry
+        # rides out occasional anonymous Docker Hub base-image pull blips.
+        run: |
+          for i in 1 2 3; do
+            docker build --platform linux/amd64 \
+              -t ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }} \
+              -t ${{ env.IMAGE }}:latest . && break
+            echo "build attempt $i failed, retrying in 10s"; sleep 10
+          done
+          docker push ${{ env.IMAGE }}:${{ steps.tag.outputs.tag }}
+          docker push ${{ env.IMAGE }}:latest
 
       - name: Set up kubeconfig (via doctl)
         run: doctl kubernetes cluster kubeconfig save 62e4ef8b-9b3a-4c19-8324-53ee124afc56 --expiry-seconds 1200
